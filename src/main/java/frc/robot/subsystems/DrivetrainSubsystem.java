@@ -70,6 +70,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // FIXME Uncomment if you are using a NavX
 //  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
+  public double heading;
+
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
   private final SwerveModule m_frontRightModule;
@@ -80,6 +82,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+    heading = 0;
 
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
@@ -165,7 +169,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getGyroscopeRotation() {
-    return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
+    return Rotation2d.fromDegrees(heading);
 
     // FIXME Uncomment if you are using a NavX
 //    if (m_navx.isMagnetometerCalibrated()) {
@@ -186,7 +190,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
-    SmartDashboard.putNumber("Gyro Angle", m_pigeon.getAbsoluteCompassHeading());
+    SmartDashboard.putNumber("Compass Heading", m_pigeon.getCompassHeading());
+    SmartDashboard.putNumber("Absolute Compass Heading", m_pigeon.getAbsoluteCompassHeading());
+    SmartDashboard.putNumber("Yaw", m_pigeon.getYaw());
+
+    if(m_pigeon.getYaw()<0){
+      heading =  m_pigeon.getYaw()%360+360;
+    } else {
+      heading =  m_pigeon.getYaw()%360;
+    }
+
+    SmartDashboard.putNumber("Heading", heading);
+
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
