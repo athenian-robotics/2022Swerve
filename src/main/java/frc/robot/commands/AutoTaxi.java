@@ -8,6 +8,8 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class AutoTaxi extends SequentialCommandGroup {
   public AutoTaxi(DrivetrainSubsystem drivetrain) {
-        new AutoDriveForwardForSeconds(drivetrain, 1);
+      addCommands(
+        new AutoDriveForwardForSeconds(drivetrain, 1)
+      );
   }
 }

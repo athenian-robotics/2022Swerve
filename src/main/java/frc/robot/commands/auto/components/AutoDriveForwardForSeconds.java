@@ -2,17 +2,18 @@ package frc.robot.commands.auto.components;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class AutoDriveForwardForSeconds extends Command {
+public class AutoDriveForwardForSeconds extends CommandBase {
     DrivetrainSubsystem drivetrain;
-    Timer driveTimer = new Timer();
-    double secondsTodrive;
+    Timer driveTimer;
+    double secondsToDrive;
 
     public AutoDriveForwardForSeconds(DrivetrainSubsystem drivetrain, double secondsToDrive) {
         this.drivetrain = drivetrain;
-        this.secondsTodrive = secondsToDrive;
-
+        this.secondsToDrive = secondsToDrive;
+        driveTimer = new Timer();
     }
 
     public void initialize() {
@@ -25,7 +26,7 @@ public class AutoDriveForwardForSeconds extends Command {
     }
 
     public boolean isFinished() {
-        return driveTimer.hasElapsed(secondsTodrive);
+        return driveTimer.advanceIfElapsed(secondsToDrive);
     }
 
     public void end(boolean interrupted) {
