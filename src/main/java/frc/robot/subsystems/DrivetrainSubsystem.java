@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 
@@ -81,16 +84,39 @@ public class DrivetrainSubsystem extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     heading = 0;
+    SupplyCurrentLimitConfiguration angleSupplyLimit = new SupplyCurrentLimitConfiguration(
+            Constants.angleEnableCurrentLimit,
+            Constants.angleContinuousCurrentLimit,
+            Constants.anglePeakCurrentLimit,
+            Constants.anglePeakCurrentDuration);
+
+    SupplyCurrentLimitConfiguration driveSupplyLimit = new SupplyCurrentLimitConfiguration(
+            Constants.driveEnableCurrentLimit,
+            Constants.driveContinuousCurrentLimit,
+            Constants.drivePeakCurrentLimit,
+            Constants.drivePeakCurrentDuration);
+
+    WPI_TalonFX fleft = new WPI_TalonFX(FRONT_LEFT_MODULE_DRIVE_MOTOR);
+    fleft.configSupplyCurrentLimit(driveSupplyLimit);
+
+    WPI_TalonFX bleft = new WPI_TalonFX(BACK_LEFT_MODULE_DRIVE_MOTOR);
+    bleft.configSupplyCurrentLimit(driveSupplyLimit);
+
+    WPI_TalonFX fright = new WPI_TalonFX(FRONT_RIGHT_MODULE_DRIVE_MOTOR);
+    fright.configSupplyCurrentLimit(driveSupplyLimit);
+
+    WPI_TalonFX bright = new WPI_TalonFX(BACK_RIGHT_MODULE_DRIVE_MOTOR);
+    bright.configSupplyCurrentLimit(driveSupplyLimit);
 
     leftMotors =
             new MotorControllerGroup(
-                    new WPI_TalonFX(FRONT_LEFT_MODULE_DRIVE_MOTOR),
-                    new WPI_TalonFX(BACK_LEFT_MODULE_DRIVE_MOTOR));
+                    fleft,
+                    bleft);
 
     rightMotors =
             new MotorControllerGroup(
-                    new WPI_TalonFX(FRONT_RIGHT_MODULE_DRIVE_MOTOR),
-                    new WPI_TalonFX(BACK_RIGHT_MODULE_DRIVE_MOTOR));
+                   fright,
+                    bright);
 
     m_drive = new DifferentialDrive(leftMotors, rightMotors);
 
@@ -173,6 +199,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    m_drive.feed();
+
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 

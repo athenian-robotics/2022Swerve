@@ -24,6 +24,15 @@ public final class Constants {
      *
      * Should be measured from center to center.
      */
+    public static final int angleContinuousCurrentLimit = 25;
+    public static final int anglePeakCurrentLimit = 40;
+    public static final double anglePeakCurrentDuration = 0.1;
+    public static final boolean angleEnableCurrentLimit = true;
+
+    public static final int driveContinuousCurrentLimit = 35;
+    public static final int drivePeakCurrentLimit = 60;
+    public static final double drivePeakCurrentDuration = 0.1;
+    public static final boolean driveEnableCurrentLimit = true;
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.44;
 
     public static final int DRIVETRAIN_PIGEON_ID = 1;
