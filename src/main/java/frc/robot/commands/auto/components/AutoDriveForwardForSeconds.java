@@ -1,9 +1,13 @@
 package frc.robot.commands.auto.components;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
+
+import static frc.robot.subsystems.DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 
 public class AutoDriveForwardForSeconds extends CommandBase {
     DrivetrainSubsystem drivetrain;
@@ -22,7 +26,12 @@ public class AutoDriveForwardForSeconds extends CommandBase {
     }
 
     public void execute() {
-        drivetrain.tankDrive(0.4, 0.4);
+        drivetrain.drive(ChassisSpeeds.fromFieldRelativeSpeeds(
+            0.0,
+            1*MAX_VELOCITY_METERS_PER_SECOND*.1,
+            0,
+            new Rotation2d()
+      ));
     }
 
     public boolean isFinished() {
