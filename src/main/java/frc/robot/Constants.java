@@ -30,7 +30,7 @@ public final class Constants {
     public static final boolean angleEnableCurrentLimit = true;
 
     public static final int driveContinuousCurrentLimit = 35;
-    public static final int drivePeakCurrentLimit = 60;
+    public static final int drivePeakCurrentLimit = 80;
     public static final double drivePeakCurrentDuration = 0.1;
     public static final boolean driveEnableCurrentLimit = true;
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.44;

@@ -33,7 +33,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * <p>
    * This can be reduced to cap the robot's maximum speed. Typically, this is useful during initial testing of the robot.
    */
-  public static final double MAX_VOLTAGE = 7;
+  public static final double MAX_VOLTAGE = 12;
   /**
    * The maximum velocity of the robot in meters per second.
    * <p>
@@ -41,7 +41,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
           SdsModuleConfigurations.MK4_L2.getDriveReduction() *
-          SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI;
+          SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI * 1.5;
   /**
    * The maximum angular velocity of the robot in radians per second.
    * <p>
